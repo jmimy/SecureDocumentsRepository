@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 
-
+@XmlRootElement
 public class SecureDocument {
 
     private Date createDate;

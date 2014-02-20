@@ -3,6 +3,7 @@ package test.java;
 import main.java.SecureDocument;
 import main.java.XMLParse;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +22,7 @@ import static junit.framework.Assert.assertEquals;
 public class TestXMLParse {
 
     @Test
-    public void XMLParseTest() throws ParseException {
+    public void XMLParseTest() throws ParseException, FileNotFoundException {
 
 
         /*Set Values*/

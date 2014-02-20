@@ -5,6 +5,8 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 import javax.xml.bind.*;
 import javax.xml.namespace.QName;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.StringWriter;
 
 /**
@@ -16,14 +18,14 @@ public class XMLParse {
 
     }
 
-    public static void objectToXML(SecureDocument s, String filePath) {
+    public static void objectToXML(SecureDocument s, String filePath) throws FileNotFoundException {
         try {
             JAXBContext context = JAXBContext.newInstance(SecureDocument.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(s, new File(filePath));
             QName qName = new QName("main.java", "s");
             JAXBElement<SecureDocument> root = new JAXBElement<SecureDocument>(qName, SecureDocument.class, s);
+            m.marshal(s, new FileOutputStream(filePath));
 
         } catch (JAXBException e) {
             e.printStackTrace();
