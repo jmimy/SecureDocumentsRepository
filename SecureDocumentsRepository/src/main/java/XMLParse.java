@@ -3,7 +3,9 @@ package main.java;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 import javax.xml.bind.*;
+import javax.xml.namespace.QName;
 import java.io.File;
+import java.io.StringWriter;
 
 /**
  * Created by Administrator on 2/19/14.
@@ -20,6 +22,9 @@ public class XMLParse {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(s, new File(filePath));
+            QName qName = new QName("main.java", "s");
+            JAXBElement<SecureDocument> root = new JAXBElement<SecureDocument>(qName, SecureDocument.class, s);
+
         } catch (JAXBException e) {
             e.printStackTrace();
 
