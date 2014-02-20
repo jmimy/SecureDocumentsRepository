@@ -8,11 +8,9 @@ import java.util.Date;
  * Created by Administrator on 2/19/14.
  */
 
-@XmlRootElement(namespace = "main.java")
+
 
 public class SecureDocument {
-
-    @XmlElement(name = "Secure Document")
 
     private Date createDate;
     private String username;
@@ -21,16 +19,6 @@ public class SecureDocument {
     private String Information;
     private Boolean accessControl;
 
-     public SecureDocument() {}
-
-     public SecureDocument(Date createDate, String username, Date modifiedDate, String Subject, String Information, Boolean accessControl) {
-        this.createDate = createDate;
-        this.username = username;
-        this.modifiedDate = modifiedDate;
-        this.Subject = Subject;
-        this.Information = Information;
-        this.accessControl = accessControl;
-    }
 
     public Date getCreateDate() {
         return createDate;

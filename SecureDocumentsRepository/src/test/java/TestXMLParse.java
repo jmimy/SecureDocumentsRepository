@@ -20,38 +20,42 @@ import static junit.framework.Assert.assertEquals;
 
 public class TestXMLParse {
 
-    private Date createDate;
-    private Date modifyDate;
-    private String username;
-    private String subject;
-    private String document;
-    private Boolean accesscontrol;
+    @Test
+    public void XMLParseTest() throws ParseException {
 
-    @Before
-    public void setup() throws ParseException {
 
+        /*Set Values*/
+        SecureDocument d = new SecureDocument();
         String creationDate = "December 12, 2013";
         Date createDate = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(creationDate);
+        d.setCreateDate(createDate);
         String modificationDate = "December 12, 2013";
         Date modifyDate = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(modificationDate);
-        String username = "nschell";
-        String subject = "Confidential Info";
-        String document = "Jack Bauer on his way to England, thwarting a terrorist attack for 24 Live Another Day";
-        Boolean accesscontrol = false;
-    }
+        d.setModifiedDate(modifyDate);
+        d.setUsername("nschell");
+        d.setSubject("Confidential Info");
+        d.setInformation("Jack Bauer on his way to England, thwarting a terrorist attack for 24 Live Another Day");
+        d.setAccessControl(false);
 
-    @Test
-    public void XMLParseTest() {
 
-    SecureDocument secDoc = new SecureDocument(createDate, username, modifyDate, subject, document, accesscontrol);
-    XMLParse.objectToXML(secDoc, "C:\\test\\test.xml");
-    SecureDocument testDoc = XMLParse.XMLToObject("C:\\test\\test.xml");
+        /*Expected values */
+        String creationDateExpected = "December 12, 2013";
+        Date createDateExpected = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(creationDateExpected);
+        String modificationDateExpected = "December 12, 2013";
+        Date modifyDateExpected = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(modificationDateExpected);
+        String usernameExpected = "nschell";
+        String subjectExpected = "Confidential Info";
+        String documentExpected = "Jack Bauer on his way to England, thwarting a terrorist attack for 24 Live Another Day";
+        Boolean accesscontrolExpected = false;
 
-        assertEquals(createDate, testDoc.getCreateDate());
-        assertEquals(modifyDate, testDoc.getCreateDate());
-        assertEquals(username, testDoc.getUsername());
-        assertEquals(subject, testDoc.getSubject());
-        assertEquals(document, testDoc.getInformation());
-        assertEquals(accesscontrol, testDoc.getAccessControl());
+        XMLParse.objectToXML(d, "C:\\test\\test.xml");
+        SecureDocument testDoc = XMLParse.XMLToObject("C:\\test\\test.xml");
+
+        assertEquals(createDateExpected, testDoc.getCreateDate());
+        assertEquals(modifyDateExpected, testDoc.getCreateDate());
+        assertEquals(usernameExpected, testDoc.getUsername());
+        assertEquals(subjectExpected, testDoc.getSubject());
+        assertEquals(documentExpected, testDoc.getInformation());
+        assertEquals(accesscontrolExpected, testDoc.getAccessControl());
     }
 }
