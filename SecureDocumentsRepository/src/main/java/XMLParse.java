@@ -1,15 +1,18 @@
 package main.java;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
+
+import javax.xml.bind.*;
 import java.io.File;
 
 /**
  * Created by Administrator on 2/19/14.
  */
 public class XMLParse {
+
+    public XMLParse() {
+
+    }
 
     public static void objectToXML(SecureDocument s, String filePath) {
         try {
