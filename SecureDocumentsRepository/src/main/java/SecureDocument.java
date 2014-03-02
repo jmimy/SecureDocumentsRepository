@@ -11,30 +11,27 @@ import java.util.Date;
  */
 
 
-@XmlRootElement
 public class SecureDocument{
-
     private String docCode;
     private Date createDate;
     private Date modifiedDate;
     private String subject;
-    private String path;
-    private  String author;
+    private String author;
+    private String information;
     private Boolean accessControl;
     private int size;
 
-    private SecureDocument(String docCode, Date createDate, String subject,String author, Boolean accessControl, int size) {
-        this.docCode =docCode;
+    public SecureDocument(Date createDate,String docCode,String subject,String author, Boolean accessControl) {
+        this.docCode = docCode;
         this.createDate = createDate;
         this.subject = subject;
         this.author = author;
         this.accessControl = accessControl;
-        this.size = size;
+        
     }
+    public String getDocCode() {return docCode;}
 
-    public String getDocCode () { return docCode;}
-
-    public void setDocCode(String docCode) {this.docCode = docCode; }
+    public void setDocCode(String docCode) {this.docCode=docCode;}
 
     public Date getCreateDate() {
         return createDate;
@@ -71,5 +68,13 @@ public class SecureDocument{
     public void setAccessControl(Boolean accessControl) {
         this.accessControl = accessControl;
     }
+
+    public String getInformation(){return information; }
+
+    public void setInformation(String information){this.information = information;}
+
+    public int getSize() {return size;}
+
+    public void setSize(int size) {this.size = size;}
 
 }
