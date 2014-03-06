@@ -30,6 +30,7 @@ public class UsersTest {
         createdBy = "admin";
         type = "user";
     }
+
     @Test
     public void testUsersConstruction(){
             Users users = new Users(username, password);
@@ -46,7 +47,45 @@ public class UsersTest {
         password = "dcba4321";
         assertNotEquals("Incorrect user", users.getUsername(), username);
         assertNotEquals("Incorrect password", users.getPassword(), password);
-
     }
 
+    @Test
+    public void testSetter() {
+        Users users = new Users(username,password);
+
+        users.setName(name);
+        users.setActive(active);
+        users.setCreatedBy(createdBy);
+        users.setHomePath(homePath);
+        users.setType(type);
+
+        assertEquals("Checking Name",users.getName(),name);
+        assertEquals("Checking Active",users.getActive(),active);
+        assertEquals("Checking Created by",users.getCreatedBy(),createdBy);
+        assertEquals("Checking Type",users.getType(),type);
+    }
+
+    @Test
+    public void testSetterFalse() {
+        Users users = new Users(username,password);
+
+        users.setName(name);
+        users.setActive(active);
+        users.setCreatedBy(createdBy);
+        users.setHomePath(homePath);
+        users.setType(type);
+
+        name = "Jean Pierre";
+        homePath = "Personal//test";
+        active = false;
+        createdBy = "user";
+        type = "owner";
+
+        assertNotEquals("Not the same name", users.getName(), name);
+        assertNotEquals("Not the same homepath", users.getHomePath(), homePath);
+        assertNotEquals("Not he same active",users.getActive(),active);
+        assertNotEquals("Not the same type",users.getType(),type);
+        assertNotEquals("Not the same created ny", users.getCreatedBy(), createdBy);
+
+    }
 }

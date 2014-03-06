@@ -21,13 +21,13 @@ public class SecureDocument{
     private Boolean accessControl;
     private int size;
 
-    public SecureDocument(Date createDate,String docCode,String subject,String author, Boolean accessControl) {
+    public SecureDocument(String docCode,String author, Boolean accessControl) {
         this.docCode = docCode;
         this.createDate = createDate;
         this.subject = subject;
         this.author = author;
         this.accessControl = accessControl;
-        
+
     }
     public String getDocCode() {return docCode;}
 

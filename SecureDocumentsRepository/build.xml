@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<project name="SecureDocumentsRepository" default="all" basedir=".">
+<project name="SecureDocsRep" default="all" basedir=".">
 
     <property name="src.dir" value="src${file.separator}main${file.separator}java" description="project source code"/>
-    <property name="src-test.dir" value="src${file.separator}test${file.separator}java" description="project test code"/>
+    <property name="src-test.dir" value="src" description="project test code"/>
     <property name="lib.dir" value="lib" description="project libraries are found here"/>
     <property name="build.dir" value="build"
               description="anything this build script generates goes under this directory"/>
@@ -18,10 +18,12 @@
     -->
     <path id="project.classpath" description="the project's class path all third party libs are on it. ">
         <pathelement path="${classes.dir}"/>
-        <fileset dir="${lib.dir}">
+		<pathelement location="C:\Program Files\Junit"/>
+		<fileset dir="${lib.dir}">
             <include name="**/*.jar"/>
         </fileset>
-    </path>
+		<fileset dir="C:\Program Files\Junit" includes="*.jar"/>
+	</path>
 
 
     <!-- targets follow - each target does one thing in the compile, run, test and build process -->
@@ -43,6 +45,7 @@
             <src path="${src.dir}"/>
             <src path="${src-test.dir}"/>
             <classpath refid="project.classpath"/>
+			<compilerarg value="-Xlint"/>
         </javac>
     </target>
 

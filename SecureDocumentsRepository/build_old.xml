@@ -1,74 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="SecureDocumentsRepository" default="default" basedir=".">
-    <description>Builds, tests, and runs the project SecureDocumentsRepository.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
+<project name="SecureDocsRep" default="all" basedir=".">
 
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
-
-    (Targets beginning with '-' are not intended to be called on their own.)
-
-    Example of inserting an obfuscator after compilation could look like this:
-
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
-
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
+    <property name="src.dir" value="src${file.separator}main${file.separator}java" description="project source code"/>
+    <property name="src-test.dir" value="src${file.separator}test${file.separator}java" description="project test code"/>
+    <property name="lib.dir" value="lib" description="project libraries are found here"/>
+    <property name="build.dir" value="build"
+              description="anything this build script generates goes under this directory"/>
+    <property name="classes.dir" value="${build.dir}${file.separator}classes"
+              description="Java class files compiled by this build script  go here"/>
+    <property name="report.dir" value="${build.dir}${file.separator}report"
+              description="this directory is used by JUnit. Test results are placed here in a nice HTML format"/>
 
 
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
-
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar-with-manifest:    JAR building (if you are using a manifest)
-      -do-jar-without-manifest: JAR building (if you are not using a manifest)
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="SecureDocumentsRepository-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
+    <!-- this sets up the classpath for the project. Whenever you a .jar to the lib directory it will automatically be
+        be added to the classpath
     -->
+    <path id="project.classpath" description="the project's class path all third party libs are on it. ">
+        <pathelement path="${classes.dir}"/>
+		<pathelement location="C:\Program Files\Junit"/>
+		<fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+		<fileset dir="C:\Program Files\Junit" includes="*.jar"/>
+	</path>
+
+
+    <!-- targets follow - each target does one thing in the compile, run, test and build process -->
+
+    <target name="clean" description="deletes all build artifacts (anything created by this build file)">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${report.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization - create output directories" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${report.dir}"/>
+    </target>
+
+    <target name="compile" description="Compile all the code; produce classes" depends="init">
+        <javac destdir="${classes.dir}" debug="true" fork="true" >
+            <src path="${src.dir}"/>
+            <src path="${src-test.dir}"/>
+            <classpath refid="project.classpath"/>
+			<compilerarg value="-Xlint"/>
+        </javac>
+    </target>
+
+    <target name="test" description="Runs all the JUnit tests and generates the test results report" depends="compile">
+
+        <junit printsummary="yes" haltonfailure="false" showoutput="true" failureproperty="test_failure">
+            <classpath refid="project.classpath"/>
+
+            <formatter type="xml"/>
+
+            <batchtest fork="yes" todir="${report.dir}">
+                <fileset dir="${src-test.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${report.dir}">
+            <fileset dir="${report.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${report.dir}/html"/>
+        </junitreport>
+
+        <!-- if a test fails then the property  "test_failure" will be set and we fail now.
+         Failng now, rather than when the test actually failed allows all the tests to complete and the report
+         to be generated. 
+         -->
+        <fail if="test_failure" message="At least one JUnit test failed. Please see report."/>
+
+
+    </target>
+
+
+    <!-- this is the default target - it does everything -->
+    <target name="all" depends="init, clean, compile, test"
+            description="deletes previous work, compiles new class, runs hello program"/>
+
 </project>
