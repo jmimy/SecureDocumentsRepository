@@ -15,10 +15,16 @@ import java.util.Calendar;
 public class SecureDocumentMain {
     public static void main(String[] args) throws SQLException{
 
+        String author="jmimy";
+        String docCode= "1002";
+        Boolean accessCode = true;
+
+    Documents documents = DocumentFactory.CreateDocuments(author,docCode,accessCode);
+
     try{
         Class.forName("com.mysql.jdbc.Driver");
     } catch (ClassNotFoundException e) {
-        System.out.println("Where is MySQL JDBC Drive");
+        System.out.println("MySQL JDBC Driver");
         e.printStackTrace();
         return;
     }
@@ -30,7 +36,6 @@ public class SecureDocumentMain {
     try {
         String URL = "jdbc:mysql://localhost:3306/securedocsrep";
         conn = DriverManager.getConnection(URL, "mysql", "mysql123");
-
     }
     catch (SQLException e) {
          System.out.println();
@@ -44,6 +49,8 @@ public class SecureDocumentMain {
         str = "insert into logstbl(logCode, errMessage,user,createdate) values('10001','" + err + "', 'jmimy','" + timeLog + "')" ;
         PreparedStatement pst = conn.prepareStatement(str);
         pst.execute(str);
+
+        String str1= "select ";
     }
         else
             {System.out.println("Failed to make connection" + SQLException.class.toString());}

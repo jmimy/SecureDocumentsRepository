@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 
-public class SecureDocument{
+public class SecureDocument implements Documents{
     private String docCode;
     private Date createDate;
     private Date modifiedDate;

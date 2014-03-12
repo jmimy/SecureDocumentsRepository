@@ -4,7 +4,7 @@ package main.java;
  * Created by Jeromy on 2/24/14.
  */
 
-public class Users {
+public class Users implements Profile {
     private String username;
     private String password;
     private String name;

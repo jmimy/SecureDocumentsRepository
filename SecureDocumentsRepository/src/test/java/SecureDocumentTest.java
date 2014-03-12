@@ -1,5 +1,7 @@
 package test.java;
 
+import main.java.DocumentFactory;
+import main.java.Documents;
 import main.java.SecureDocument;
 import java.util.Calendar;
 import org.junit.Before;
@@ -23,7 +25,6 @@ public class SecureDocumentTest {
 
 
     @Before
-
     public void setup() {
         docCode = "10001";
         createDate = Calendar.getInstance().getTime();
@@ -37,7 +38,8 @@ public class SecureDocumentTest {
 
     @Test
     public void testSecureDocumentConstruction() {
-        SecureDocument secureDocument = new SecureDocument(docCode,author,accessControl);
+        Documents secureDocument;
+        secureDocument = new SecureDocument(docCode,author,accessControl);
 
         assertEquals("Check doccode", secureDocument.getDocCode(),docCode);
         assertEquals("Check author", secureDocument.getAuthor(), author);
