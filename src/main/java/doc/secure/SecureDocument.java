@@ -1,15 +1,12 @@
+/******************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 2/19/14.
+ * This is the definition of class SecureDocument which implement the interface Document. It represents
+ * any document that is saved in this repository.
+ ******************************************************************************************************/
 package doc.secure;
 
-
-import javax.swing.text.Document;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-
-/**
- * Created by Administrator on 2/19/14.
- */
-
 
 public class SecureDocument implements Documents{
     private String docCode;

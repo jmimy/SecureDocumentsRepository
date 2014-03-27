@@ -1,9 +1,13 @@
+/***************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 3/6/14.
+ * This is an interface for class SecureDocument
+ * All the getters and setters are defined for the fields to be defined in Class SecureDocument
+ *************************************************************************************************/
 package doc.secure;
 
 import java.util.Date;
-/**
- * Created by Jeromy on 3/6/14.
- */
+
 public interface Documents {
 
     public String getDocCode();

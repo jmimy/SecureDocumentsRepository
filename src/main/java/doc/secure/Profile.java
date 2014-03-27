@@ -1,8 +1,11 @@
 package doc.secure;
 
-/**
- * Created by Jeromy on 3/6/14.
- */
+/******************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: on 3/6/14.
+ * This is an interface for class Users
+ * All the getters and setters are declared for the methods to be defined in Users class
+ *****************************************************************************************/
 public interface Profile {
 
     public String getUsername();
@@ -21,9 +24,9 @@ public interface Profile {
 
     public  void setHomePath(String homepath);
 
-    public Boolean getActive();
+    public int getActive();
 
-    public void setActive(Boolean active);
+    public void setActive(int active);
 
     public String getCreatedBy();
 

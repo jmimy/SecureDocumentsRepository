@@ -1,15 +1,17 @@
+/**********************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 2/28/14.
+ * This is the class Users definition  that represent all users of the application.
+ * All the getters and setters are defined.
+ *********************************************************************************************************/
 package doc.secure;
-
-/**
- * Created by Jeromy on 2/24/14.
- */
 
 public class Users implements Profile {
     private String username;
     private String password;
     private String name;
     private String homePath;
-    private Boolean active;
+    private int active;
     private String createdBy;
     private String type;
 
@@ -34,9 +36,9 @@ public class Users implements Profile {
 
     public  void setHomePath(String homepath) {this.homePath = homePath;}
 
-    public Boolean getActive() {return active;}
+    public int getActive() {return active;}
 
-    public void setActive(Boolean active) {this.active = active;}
+    public void setActive(int active) {this.active = active;}
 
     public String getCreatedBy() {return createdBy;}
 

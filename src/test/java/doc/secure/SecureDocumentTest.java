@@ -1,3 +1,9 @@
+/**********************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 2/28/14.
+ * This the Junit Test for class SecureDocument.
+ * It tests all the class creation and all the method in class SecureDocument.
+ *********************************************************************************************************/
 package doc.secure;
 
 import java.util.Calendar;

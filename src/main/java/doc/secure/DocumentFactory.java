@@ -1,10 +1,13 @@
+/*******************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: on 3/7/14
+ * This class is used for method factory to instantiate SecureDocument object.
+ *
+ ******************************************************************************************/
 package doc.secure;
 
-/**
- * Created by Jeromy on 3/7/14.
- */
 public class DocumentFactory {
-    public static Documents CreateDocuments(String docCode,String author,Boolean accessCode) {
+    public static SecureDocument createDocuments(String docCode,String author,Boolean accessCode) {
         return new SecureDocument(docCode, author, accessCode);
     }
 }

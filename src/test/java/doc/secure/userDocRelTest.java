@@ -1,25 +1,27 @@
+/**********************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 2/28/14.
+ * This the Junit test class for class UserDocRel.
+ * It tests the class creation and all the methods.
+ *********************************************************************************************************/
 package doc.secure;
 
-        import org.junit.Before;
-        import org.junit.Test;
+ import org.junit.Before;
+ import org.junit.Test;
+ import static org.junit.Assert.assertEquals;
+ import static org.junit.Assert.assertNotEquals;
 
-        import static org.junit.Assert.assertEquals;
-        import static org.junit.Assert.assertFalse;
-        import static org.junit.Assert.assertNotEquals;
-/**
- * Created by Jeromy on 3/1/14.
- */
 public class userDocRelTest {
     private String username;
     private String docCode;
-    private char rights;
+    private String rights;
    // private char rightstest;
 
     @Before
     public void setup() {
     username = "jmimy";
     docCode = "10001";
-    rights = 'x';
+    rights = "x";
     }
 
    @Test
@@ -57,7 +59,7 @@ public class userDocRelTest {
         UserDocRel userDocRel = new UserDocRel(username, docCode);
 
         userDocRel.setRights(rights);
-        rights = 'o';
+        rights = "o";
         assertNotEquals("Check rights", userDocRel.getRights(), rights);
     }
 

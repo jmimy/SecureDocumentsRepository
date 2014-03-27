@@ -1,12 +1,16 @@
+/**********************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 2/28/14.
+ * This is the definition of the class that establishes the relationship between SecureDocument and Users
+ * objects.
+ * All the getters and setters are defined.
+ *********************************************************************************************************/
 package doc.secure;
 
-/**
- * Created by Jeromy on 2/26/14.
- */
 public class UserDocRel {
     private String username;
     private String docCode;
-    private char rights;
+    private String rights;
 
     public UserDocRel(String username, String docCode){
         this.username = username;
@@ -21,8 +25,8 @@ public class UserDocRel {
 
     public void setDocCode(String docCode){this.docCode=docCode;}
 
-    public char getRights(){return rights;}
+    public String getRights(){return rights;}
 
-    public void setRights(char rights){this.rights = rights;}
+    public void setRights(String rights){this.rights = rights;}
 
 }

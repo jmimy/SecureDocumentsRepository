@@ -1,3 +1,9 @@
+/**********************************************************************************************************
+ * Created by: Jean-Robert Mimy
+ * Date: 3/4/14.
+ * This is the Junit test class for Users class.
+ * Class construction and all methods are tested .
+ *********************************************************************************************************/
 package doc.secure;
 
 import org.junit.Before;
@@ -7,15 +13,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-/* Created by Jeromy on 3/1/14.
- */
+
 public class UsersTest {
 
     private String username;
     private String password;
     private String name;
     private String homePath;
-    private Boolean active;
+    private int active;
     private String createdBy;
     private String type;
 
@@ -25,7 +30,7 @@ public class UsersTest {
         password = "abcd1234";
         name = "Jean Mimy";
         homePath = "Personal//data";
-        active = true;
+        active = 1;
         createdBy = "admin";
         type = "user";
     }
@@ -76,7 +81,7 @@ public class UsersTest {
 
         name = "Jean Pierre";
         homePath = "Personal//test";
-        active = false;
+        active = 0;
         createdBy = "user";
         type = "owner";
 
