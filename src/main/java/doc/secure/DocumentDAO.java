@@ -1,12 +1,10 @@
 /**********************************************************************************************************
  * Created by: Jean-Robert Mimy
  * Date: 3/14/14.
- * This is the class definition all Document database access. .
- * All the methods necessary for an instance of SecureDocument to read, find by document code, find document
- * list, update or create or delete document are defined.
+ * This is the class that defines Document database access methods.
+ * Methods necessary to read, find by document code, list, update or create or delete a document.
  *********************************************************************************************************/
 package doc.secure;
-
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,56 +18,62 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class DocumentDAO {
+    private Connection connection = null;
+    private static String username = "mysql";
+    private static String password = "mysql123";
+    private static String URL = "jdbc:mysql://localhost:3306/securedocsrep";
     private static DocumentDAO instance = new DocumentDAO();
 
     public static DocumentDAO getInstance() {
         return instance;
     }
 
-    /*Method to set an object secureDocument fields from a record of table SecureDocument. It accepts a resultset and sets the field values
-    * a secureDocument object. The resultset has the following column labels:docCode, subject, author, information, createdate, accessControl. */
-    private SecureDocument read(ResultSet rs) throws SQLException
+   /*This method reads a recordset, create an instance of SecureDocument class and set its field values.
+    * @param  a resultset retrieved from table that contains  Document record
+    * @throws SQLException if resultset reading failed.
+    */
+    private SecureDocument read(ResultSet rs)
     {
-        String docCode = rs.getString("docCode");
-        String subject = rs.getString("subject");
-        String author = rs.getString("author");
-        String information = rs.getString("information");
-        Date createDate = rs.getDate("createDate");
-        Boolean accessControl = rs.getBoolean("accessControl");
-        int size = rs.getInt("size") ;
-        SecureDocument secureDocument = DocumentFactory.createDocuments(docCode, author, accessControl);
-        secureDocument.setDocCode(docCode);
-        secureDocument.setSubject(subject);
-        secureDocument.setAuthor(author);
-        secureDocument.setInformation(information);
-        secureDocument.setCreateDate(createDate);
-        return secureDocument;
+        try
+        {
+            String docCode = rs.getString("docCode");
+            String subject = rs.getString("subject");
+            String author = rs.getString("author");
+            String information = rs.getString("information");
+            Date createDate = rs.getDate("createDate");
+            Boolean accessControl = rs.getBoolean("accessControl");
+            int size = rs.getInt("size") ;
+
+            SecureDocument secureDocument = DocumentFactory.createDocuments(docCode, author, accessControl);
+
+            secureDocument.setDocCode(docCode);
+            secureDocument.setSubject(subject);
+            secureDocument.setAuthor(author);
+            secureDocument.setInformation(information);
+            secureDocument.setCreateDate(createDate);
+
+            return secureDocument;
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
-    private UserDocRel relRead(ResultSet resultSet) throws SQLException
-    {
-        String docCode = resultSet.getString("docCode");
-        String username = resultSet.getString("username");
-        String right = resultSet.getString("right");
-        UserDocRel userDocRel = new UserDocRel(username,docCode);
-        userDocRel.setDocCode(docCode);
-        userDocRel.setUsername(username);
-        userDocRel.setRights(right);
-        return userDocRel;
-
-    }
-
-    /* Method to retrieve document from the table securedoctbl */
+    /* This method search for a document record in table securedoctbl knowing its code key value.
+    * @param code of the document
+    * @throws SQLException if connection failed.
+    */
     public SecureDocument findByDocCode(String docCode)
     {
         ResultSet rs = null;
         PreparedStatement statement = null;
-        Connection connection = null;
-        String URL;
+
         try
         {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
+            if (connection.isClosed())
+                {connection = DriverManager.getConnection(URL, username, password);}
+
             String sql = "select * from securedoctbl where docCode= '" + docCode + "'";
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -83,56 +87,33 @@ public class DocumentDAO {
         {
             throw new RuntimeException(e);
         }
-
-    }
-
-    /* Method to retrieve document record from securedocstbl table */
-    public List<SecureDocument> findAll()
-    {
-        ResultSet rs = null;
-        PreparedStatement statement = null;
-        Connection connection = null;
-        String URL;
-        LinkedList<SecureDocument> documents = new LinkedList<SecureDocument>();
-
-        try
-        {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
-            String sql = "select * from securedoctbl order by docCode";
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            while (rs.next())
-            {
-                SecureDocument secureDocument = read(rs);
-                documents.add(secureDocument);
-            }
-            return documents;
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
         finally
         {
-
+            try {
+                connection.close();
+            }
+            catch (SQLException econ) {
+                Message messsage = new Message(econ.getMessage());
+            }
         }
+
     }
 
-
-    /* Method to retrieve document records from securedocstbl table for a given user */
+    /* This method return all documents a logon user has access to according to records in userRelDoc table.
+    * @param  user instance
+    * @throws SQLException if connection failed.
+    */
     public List<SecureDocument> findUserDocs(Users users)
     {
         ResultSet rs = null;
         PreparedStatement statement = null;
-        Connection connection = null;
-        String URL;
         LinkedList<SecureDocument> documents = new LinkedList<SecureDocument>();
 
         try
         {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
+            if (connection.isClosed())
+                {connection = DriverManager.getConnection(URL, username, password);}
+
             String sql = "select * from securedoctbl where doccode in (select doccode from userDocRel where username = '" + users.getUsername() + "')" ;
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -141,16 +122,16 @@ public class DocumentDAO {
                 SecureDocument secureDocument = read(rs);
                 documents.add(secureDocument);
             }
-           // return documents;
+            rs.close();
+            connection.close();
+           return documents;
         }
         catch (SQLException e)
         {
-            //Handle CommunicationsException
-            if (e.getSQLState() == "08001"){
-                Message messsage = new Message("Your database server is not running.");
-            }
+            throw new RuntimeException(e);
         }
-        finally {
+        finally
+        {
             try {
                 connection.close();
             }
@@ -158,23 +139,30 @@ public class DocumentDAO {
                 Message messsage = new Message(econ.getMessage());
             }
         }
-     return documents;
+
     }
 
-    /* Method to update a document record in securedocstbl table  */
-    public void update(SecureDocument secureDocument)
+    /* This method updates a document record.
+    * @param  a SecureDocument instance
+    * @throws SQLException if connection failed.
+    */
+    public static void update(SecureDocument secureDocument)
     {
         PreparedStatement statement = null;
         Connection connection = null;
-        String URL;
+
         try
         {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
+
+
+            connection = DriverManager.getConnection(URL, username, password);
             String sql = "update securedoctbl set subject='" +secureDocument.getSubject() + "' where docCode= '" + secureDocument.getDocCode() + "'";
             statement = connection.prepareStatement(sql);
             statement.executeUpdate();
-        } catch (SQLException e)
+            connection.close();
+            Message message = new Message("Document updated successfully.");
+        }
+        catch (SQLException e)
         {
             //Handle CommunicationsException
             if (e.getSQLState() == "08001"){
@@ -191,30 +179,36 @@ public class DocumentDAO {
         }
     }
 
-    /* Method to create a new document record in securedocstbl table from an existing object secureDocument */
-    public void create(SecureDocument secureDocument)
+    /* Method to insert a new document record in securedocstbl table from an instance of SecureDocument field values.
+    * @param a instance of a SecureDocument
+    * @throws SQLException if connection failed
+    */
+    public static void create(SecureDocument secureDocument)
     {
         PreparedStatement statement = null;
         Connection connection = null;
-        String URL;
-        String d1;
-        String d2;
-        int a;
+        String dateFormat1;
+        String dateFormat2;
+        int aBoolToInt;
 
         try
         {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            d1 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(secureDocument.getCreateDate());   //Date type conversion
-            d2 = new  SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(secureDocument.getModifiedDate()); //Date type conversion
+            dateFormat1 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(secureDocument.getCreateDate());   //Date type conversion
+            dateFormat2 = new  SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(secureDocument.getModifiedDate()); //Date type conversion
             Boolean accessControl = secureDocument.getAccessControl();
-            a = ( accessControl == true) ? 1: 0;                                                       // Boolean type convert to int(true=1,false=0)
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
+            aBoolToInt = ( accessControl == true) ? 1: 0; // Boolean type convert to int(true=1,false=0)
+
+
+            connection = DriverManager.getConnection(URL, username, password);
+
             String sql = "insert into securedoctbl " + "(docCode, createDate, modifiedDate, subject, author, information, accessControl, size ) "
-                    + "values ('" + secureDocument.getDocCode() +"','" + d1 + "','" + d2 + "','" + secureDocument.getSubject() + "','"
-                    + secureDocument.getAuthor() + "','" + secureDocument.getInformation() + "','"+ a +  "',"
+                    + "values ('" + secureDocument.getDocCode() +"','" + dateFormat1 + "','" + dateFormat2 + "','" + secureDocument.getSubject() + "','"
+                    + secureDocument.getAuthor() + "','" + secureDocument.getInformation() + "','"+ aBoolToInt +  "',"
                     + secureDocument.getSize() + ")";
             statement = connection.prepareStatement(sql);
             statement.executeUpdate();
+            connection.close();
+            Message message = new Message("Document created successfully.");
         }
         catch (SQLException e)
         {
@@ -223,7 +217,6 @@ public class DocumentDAO {
                 Message messsage = new Message("Your database server is not running.");
             }
         }
-
         finally {
             try {
                 connection.close();
@@ -235,20 +228,26 @@ public class DocumentDAO {
         }
     }
 
-    /* Method to delete a document */
-    public void delete(SecureDocument secureDocument)
+
+    /* Method to delete an existing document record in securedocstbl table.
+    * @param   an instance of a SecureDocument
+    * @throws  SQLException if connection failed
+    */
+    public static void delete(SecureDocument secureDocument)
     {
         PreparedStatement statement = null;
         Connection connection = null;
-        String URL;
 
         try
         {
-            URL = "jdbc:mysql://localhost:3306/securedocsrep";
-            connection = DriverManager.getConnection(URL, "mysql", "mysql123");
+            if (connection.isClosed())
+                {connection = DriverManager.getConnection(URL, username, password);}
+
             String sql = "delete from securedoctbl where docCode='" + secureDocument.getDocCode() + "'";
             statement = connection.prepareStatement(sql);
             statement.executeUpdate();
+            connection.close();
+            Message message = new Message("Document deleted successfully.");
         } catch (SQLException e)
         {
             //Handle CommunicationsException

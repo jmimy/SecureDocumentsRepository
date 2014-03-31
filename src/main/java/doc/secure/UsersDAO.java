@@ -25,8 +25,10 @@ public class UsersDAO {
     }
 
 
-    /*Method to set an object user fields from a record of table Users. It accepts a resultset and sets the field values
-     * an user object. The resultset has the following columns:username, password, type, name, active. */
+    /*This method reads a recordset, create an instance of Users class and set its fields values.
+    * @param  a resultset retrieved from table that contains  Users record
+    * @throws SQLException if resultset reading failed.
+    */
     private Users read(ResultSet rs) throws SQLException
     {
         String username = rs.getString("username");
@@ -43,7 +45,10 @@ public class UsersDAO {
         return user;
     }
 
-    /* Method to retrieve a user from the table User */
+    /*This method receives a Users instance, verifies if the username is in the users table and returns a boolean value.
+    * @param  a Users instance
+    * @throws SQLException if resultset reading failed.
+    */
     public Boolean findByUsername(Users users) throws SQLException
     {
         ResultSet rs = null;
@@ -51,7 +56,7 @@ public class UsersDAO {
         Connection connection = null;
         String URL;
         String sql;
-        Boolean result = true;
+        Boolean result = false;
         try
         {
             URL = "jdbc:mysql://localhost:3306/securedocsrep";
@@ -65,7 +70,9 @@ public class UsersDAO {
             {
                 result = false;
             }
-            //result = true;
+            else
+                result = true;
+
         }
         catch (SQLException e)
         {
@@ -93,9 +100,10 @@ public class UsersDAO {
         return result;
     }
 
-
-
-    /* Method to retrieve of users record from Users table */
+    /*This method returns the whole list of users from users table.
+    * @param  Users.
+    * @throws SQLException if resultset reading failed.
+    */
     public List<Users> findAll() throws SQLException
     {
         ResultSet rs = null;
@@ -117,24 +125,12 @@ public class UsersDAO {
                 Users users = read(rs);
                 user.add(users);
             }
-
         }
         catch (SQLException e)
         {
             //Handle CommunicationsException
             if (e.getSQLState() == "08001"){
                 Message messsage = new Message("Your database server is not running.");
-            }
-            try {
-                String timeLog = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                String err = connection.toString();
-                sql = "insert into logstbl(logCode, errMessage,user,createdate) values('10001','" + err + "', 'jmimy','" + timeLog + "')" ;
-                PreparedStatement pst = connection.prepareStatement(sql);
-                pst.execute(sql);
-            }
-            catch (SQLException elog)
-            {
-                Message message = new Message(elog.getMessage());
             }
         }
         finally
@@ -144,7 +140,10 @@ public class UsersDAO {
     return user;
     }
 
-    /* Method to update a user record in Users table  */
+    /*This method updates user record .
+    * @param  Users.
+    * @throws SQLException if resultset reading failed.
+    */
     public void update(Users user) throws SQLException
     {
         PreparedStatement statement = null;
@@ -169,7 +168,10 @@ public class UsersDAO {
         }
     }
 
-    /* Method to create a new user record in Users table from an existing object user */
+    /*This method create users record in users table.
+     * @param  Users user table.
+     * @throws SQLException if resultset reading failed.
+     */
     public void create(Users user) throws SQLException
     {
         PreparedStatement statement = null;
@@ -192,7 +194,10 @@ public class UsersDAO {
         }
     }
 
-    /* Method to delete a user */
+    /*This method delees a user record from users table.
+     * @param  Users table.
+     * @throws SQLException if resultset reading failed.
+     */
     public void delete(Users user)
     {
         PreparedStatement statement = null;

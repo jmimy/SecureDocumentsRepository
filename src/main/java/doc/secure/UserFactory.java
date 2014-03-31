@@ -1,9 +1,9 @@
-/**********************************************************************************************************
+/*******************************************************************************************
  * Created by: Jean-Robert Mimy
- * Date: 2/28/14.
- * This the class that defines the method factory that is used to instantiate Users class.
- *
- *********************************************************************************************************/
+ * Date: on 3/7/14
+ * This class defines a method factory to instantiate User object.
+ * @param
+ ******************************************************************************************/
 package doc.secure;
 
 public class UserFactory {

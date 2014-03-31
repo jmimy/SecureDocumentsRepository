@@ -13,9 +13,7 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-/**
- * Created by Jeromy on 3/1/14.
- */
+
 public class SecureDocumentTest {
     private String docCode;
     private Date createDate;

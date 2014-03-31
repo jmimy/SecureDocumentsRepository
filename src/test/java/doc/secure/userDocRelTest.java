@@ -11,11 +11,10 @@ package doc.secure;
  import static org.junit.Assert.assertEquals;
  import static org.junit.Assert.assertNotEquals;
 
-public class userDocRelTest {
+public class UserDocRelTest {
     private String username;
     private String docCode;
     private String rights;
-   // private char rightstest;
 
     @Before
     public void setup() {

@@ -76,7 +76,7 @@ public class SignOn extends JFrame {
                     Message message = new Message(esign.getMessage());
                 }
 
-                if (test)
+                if (test = false)
                 {
                     Message message = new Message(" Invalid account.Enter an actual user and password." );
                 }

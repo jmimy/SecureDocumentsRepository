@@ -1,8 +1,8 @@
 /*******************************************************************************************
  * Created by: Jean-Robert Mimy
  * Date: on 3/7/14
- * This class is used for method factory to instantiate SecureDocument object.
- *
+ * This class defines a method factory to instantiate SecureDocument object.
+ * @param
  ******************************************************************************************/
 package doc.secure;
 

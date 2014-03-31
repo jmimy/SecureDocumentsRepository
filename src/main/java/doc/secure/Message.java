@@ -1,8 +1,7 @@
 /**********************************************************************************************************
  * Created by: Jean-Robert Mimy
  * Date: 03/14/14.
- * This is the class for control Access. A signon form require user authentication. It validate username and
- * password pair against the database and load the main screen, if credentials are valid.
+ * This class defined a window or frame to display Error and Warnings message for the user.
  *********************************************************************************************************/
 
 package doc.secure;
