@@ -6,6 +6,7 @@
  *********************************************************************************************************/
 package doc.secure;
 
+// todo class level doc
 public class Users implements Profile {
     private String username;
     private String password;
@@ -15,6 +16,7 @@ public class Users implements Profile {
     private String createdBy;
     private String type;
 
+    // todo javadoc
     public Users(String username, String password) {
         this.username = username;
         this.password = password;

@@ -69,10 +69,11 @@ public class SignOn extends JFrame {
                 UsersDAO usersDAO = new UsersDAO();
                 Users user = new Users(username, password);
                 try {
+                    // what is test? poorly named variable -
                     test=usersDAO.findByUsername(user);
                 }
                 catch (SQLException esign)
-                {
+                {        //todo again - not exception handling - I am pretty sure we talked about this at length, right?
                     Message message = new Message(esign.getMessage());
                 }
 

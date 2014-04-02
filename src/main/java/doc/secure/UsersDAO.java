@@ -51,6 +51,8 @@ public class UsersDAO {
     */
     public Boolean findByUsername(Users users) throws SQLException
     {
+
+
         ResultSet rs = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -58,7 +60,7 @@ public class UsersDAO {
         String sql;
         Boolean result = false;
         try
-        {
+        {    //todo  this should not be hard coded, it should be read from a properties file
             URL = "jdbc:mysql://localhost:3306/securedocsrep";
             connection = DriverManager.getConnection(URL, "mysql", "mysql123");
             sql = "select * from users where username=? and password = ?";
@@ -88,7 +90,7 @@ public class UsersDAO {
                 pst.execute(sql);
             }
             catch (SQLException elog)
-            {
+            {      // todo this pattern is not exception handling -do you understand why?
                 Message message = new Message(elog.getMessage());
             }
             finally

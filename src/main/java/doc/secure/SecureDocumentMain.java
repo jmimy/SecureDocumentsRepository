@@ -23,13 +23,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
+// todo need class comments.
 public class SecureDocumentMain extends JFrame {
             private static String username;
             private static String date = new SimpleDateFormat("MM/dd/YYYY").format(Calendar.getInstance().getTime());;
             private static String timeLog = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());;
 
-            public SecureDocumentMain(String username) {
+
+    // todo public methods neeed comments .
+    public SecureDocumentMain(String username) {
                 this.username = username;
                 initComponents();
             }
@@ -125,14 +127,14 @@ public class SecureDocumentMain extends JFrame {
                         pst.execute(sql_rel);
                     }
                     catch (SQLException elog)
-                    {
+                    {    // todo this is not exception handling. It is just Exception logging
                          Message message = new Message(elog.getMessage());
                     }
                 }
                 finally
-                {
+                {         // FYI java 7 has a better way to handle this http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
                     try {
-                        connection.close();
+                        connection.close();   // good ot make sure this is closed.
                     }
                     catch (SQLException econ) {
                         Message message = new Message(econ.getMessage());
@@ -232,6 +234,7 @@ public class SecureDocumentMain extends JFrame {
                     }
                 });
 
+                // this code is unreadable - I had asked students not use to a GUI builder
          /* Setup the appearance of the window: panel, table, buttons and data fields needed. Adds to the Panel.add(scrollPane, BorderLayout.CENTER). */
                 GroupLayout jPanel1Layout = new GroupLayout(jPanel);
                 jPanel.setLayout(jPanel1Layout);
