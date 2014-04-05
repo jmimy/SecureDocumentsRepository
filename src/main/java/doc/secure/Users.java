@@ -6,6 +6,10 @@
  *********************************************************************************************************/
 package doc.secure;
 
+import doc.secure.swing.MessageFrame;
+import org.hsqldb.jdbc.JDBCDriver;
+import java.sql.*;
+
 public class Users implements Profile {
     private String username;
     private String password;
@@ -14,6 +18,13 @@ public class Users implements Profile {
     private int active;
     private String createdBy;
     private String type;
+    String sql;
+    ResultSet rs = null;
+    Statement statement = null;
+    Connection connection = null;
+    String URL;
+    String dbusr = "SA";
+    String dbpassword = "SA";
 
     public Users(String username, String password) {
         this.username = username;
@@ -75,4 +86,41 @@ public class Users implements Profile {
    * @param  user type
    */
     public void setType(String type) {this.type = type;}
+
+    public Boolean findByUsername() throws SQLException
+    {
+
+        Boolean result = false;
+
+        try {
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+        }
+        catch (ClassNotFoundException c)
+        {
+            MessageFrame message = new MessageFrame( "#5" + c.getMessage());
+        }
+
+        try
+        {
+            URL = "jdbc:hsqldb:file:lib/data/testdb;ifexists=true";
+            connection = DriverManager.getConnection(URL, dbusr, dbpassword);
+            sql = "select * from users where username= '" + username + "' and password = '" + password + "'";
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+
+            if (rs.next())
+            {
+                result = true;
+            }
+
+        }
+        catch (SQLException e)
+        {
+            //Handle CommunicationsException
+            MessageFrame messsage = new MessageFrame(e.getMessage());
+
+        }
+
+        return result;
+    }
 }
