@@ -94,79 +94,10 @@ public class SecureDocumentFrame extends JFrame {
                 columns_name.addElement("Size");
                 dtm.setColumnIdentifiers(columns_name);
 
-                /*try
-                {
-                    Class.forName("org.hsqldb.jdbc.JDBCDriver");
-                }
-                catch (ClassNotFoundException c)
-                {
-                    MessageFrame message = new MessageFrame( "#5" + c.getMessage());
-                }
-
-                try
-                {
-                    URL = "jdbc:hsqldb:file:lib/data/testdb;ifexists=true";
-                    connection = DriverManager.getConnection(URL, "SA", "SA");
-                    sql_rel = "select docCode , subject , author," +
-                            " information , createDate , modifiedDate, " +
-                            "size from securedoctbl where doccode in (select distinct doccode from userdocrel " +
-                            "where username = '" + username +"')" ;
-
-                    statement = connection.prepareStatement(sql_rel);
-                    rs = statement.executeQuery();
-
-                    //Rows Vector Elements
-                    while (rs.next()) {
-                        data_row = new Vector<String>(columns);
-                        for (int j=1; j<=columns; j++)
-                        {
-                           data_row.addElement(rs.getString(j));
-                        }
-                        dtm.addRow(data_row);
-                    }
-
-                    //Pass the Table Object Model Structure
-                    docTable.setModel(dtm);
-
-                    jScrollPane.setViewportView(docTable);
-                }//End of Try
-                catch (SQLException e)
-                {
-                    //Handle CommunicationsException
-                    MessageFrame messsage = new MessageFrame(e.getMessage());
-
-                    try {
-                        String err = connection.toString();
-                        sql_rel = "insert into logstbl(logCode, errMessage,user,createdate) values('10001','" + err + "', 'jmimy','" + timeLog + "')" ;
-                        PreparedStatement pst = connection.prepareStatement(sql_rel);
-                        pst.execute(sql_rel);
-                    }
-                    catch (SQLException elog)
-                    {
-                         MessageFrame message = new MessageFrame("#3" + elog.getMessage());
-                    }
-                }
-                finally
-                {
-                    try {
-                        connection.close();
-                    }
-                    catch (SQLException econ) {
-                        MessageFrame message = new MessageFrame("#4" + econ.getMessage());
-                    }
-
-                }*/
-
                 try {
                     DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
                     Document doc = docBuilder.parse (new File("lib/securedocuments.xml"));
-
-                    /*// normalize text representation
-                    doc.getDocumentElement ().normalize ();
-                    System.out.println ("Root element of the doc is " +
-                            doc.getDocumentElement().getNodeName());*/
-
 
                     NodeList listOfDocuments = doc.getElementsByTagName("document");
                     int totalUsers = listOfDocuments.getLength();
