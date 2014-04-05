@@ -8,6 +8,14 @@ package doc.secure;
 
 import doc.secure.swing.MessageFrame;
 import org.hsqldb.jdbc.JDBCDriver;
+//xml file
+import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import java.sql.*;
 
 public class Users implements Profile {
@@ -18,6 +26,7 @@ public class Users implements Profile {
     private int active;
     private String createdBy;
     private String type;
+
     String sql;
     ResultSet rs = null;
     Statement statement = null;
@@ -89,38 +98,54 @@ public class Users implements Profile {
 
     public Boolean findByUsername() throws SQLException
     {
-
         Boolean result = false;
 
         try {
-            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse (new File("lib/users.xml"));
+            NodeList listOfUsers = doc.getElementsByTagName("user");
+
+            for(int s=0; s<listOfUsers.getLength() ; s++){
+
+                Node firstUserNode = listOfUsers.item(s);
+                if(firstUserNode.getNodeType() == Node.ELEMENT_NODE){
+
+                    Element firstUserElement = (Element)firstUserNode;
+
+                    NodeList usernameList = firstUserElement.getElementsByTagName("username");
+                    Element usernameElement = (Element)usernameList.item(0);
+                    NodeList textUList = usernameElement.getChildNodes();
+
+                    NodeList passwordList = firstUserElement.getElementsByTagName("password");
+                    Element passwordElement = (Element)passwordList.item(0);
+                    NodeList textPList = passwordElement.getChildNodes();
+
+                    if (((Node)textUList.item(0)).getNodeValue().toString().contentEquals(username) && ((Node)textPList.item(0)).getNodeValue().contentEquals(password))
+                    {
+                        result = true;
+                        break;
+                    }
+
+                }
+            }//end of for loop with s var
         }
-        catch (ClassNotFoundException c)
+        catch (SAXParseException err)
         {
-            MessageFrame message = new MessageFrame( "#5" + c.getMessage());
+            MessageFrame messageFrame = new MessageFrame("Parsing error" + ", line "
+                    + err.getLineNumber () + ", uri " + err.getSystemId ());
         }
-
-        try
+        catch (SAXException e)
         {
-            URL = "jdbc:hsqldb:file:lib/data/testdb;ifexists=true";
-            connection = DriverManager.getConnection(URL, dbusr, dbpassword);
-            sql = "select * from users where username= '" + username + "' and password = '" + password + "'";
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-
-            if (rs.next())
-            {
-                result = true;
-            }
+            Exception x = e.getException ();
+            MessageFrame messageFrame = new MessageFrame(((x == null) ? e : x).getMessage());
 
         }
-        catch (SQLException e)
+        catch (Throwable t)
         {
-            //Handle CommunicationsException
-            MessageFrame messsage = new MessageFrame(e.getMessage());
-
+           MessageFrame messageFrame = new MessageFrame(t.getMessage());
         }
-
+        //retrurn boolean value
         return result;
-    }
+    }//end of findByUsername
 }

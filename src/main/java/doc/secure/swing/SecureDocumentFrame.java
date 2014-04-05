@@ -19,7 +19,15 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
-import org.hsqldb.jdbc.JDBCDriver;
+
+import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import java.util.Vector;
 
 import doc.secure.SecureDocument;
 import doc.secure.swing.MessageFrame;
@@ -86,7 +94,7 @@ public class SecureDocumentFrame extends JFrame {
                 columns_name.addElement("Size");
                 dtm.setColumnIdentifiers(columns_name);
 
-                try
+                /*try
                 {
                     Class.forName("org.hsqldb.jdbc.JDBCDriver");
                 }
@@ -147,6 +155,90 @@ public class SecureDocumentFrame extends JFrame {
                         MessageFrame message = new MessageFrame("#4" + econ.getMessage());
                     }
 
+                }*/
+
+                try {
+                    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+                    Document doc = docBuilder.parse (new File("lib/securedocuments.xml"));
+
+                    /*// normalize text representation
+                    doc.getDocumentElement ().normalize ();
+                    System.out.println ("Root element of the doc is " +
+                            doc.getDocumentElement().getNodeName());*/
+
+
+                    NodeList listOfDocuments = doc.getElementsByTagName("document");
+                    int totalUsers = listOfDocuments.getLength();
+                    System.out.println("Total nbr of users : " + totalUsers);
+
+                    for(int s=0; s<listOfDocuments.getLength() ; s++){
+                        data_row = new Vector<String>(7);
+
+                        Node firstDocumentNode = listOfDocuments.item(s);
+                        if(firstDocumentNode.getNodeType() == Node.ELEMENT_NODE){
+
+
+                            Element firstDocumentElement = (Element)firstDocumentNode;
+
+                            NodeList doccodeList = firstDocumentElement.getElementsByTagName("doccode");
+                            Element doccodeElement = (Element)doccodeList.item(0);
+                            NodeList textDCList = doccodeElement.getChildNodes();
+
+                            NodeList subjectList = firstDocumentElement.getElementsByTagName("subject");
+                            Element subjectElement = (Element)subjectList.item(0);
+                            NodeList textSJList = subjectElement.getChildNodes();
+
+                            NodeList informationList = firstDocumentElement.getElementsByTagName("information");
+                            Element informationElement = (Element)informationList.item(0);
+                            NodeList textIFList = informationElement.getChildNodes();
+
+                            NodeList authorList = firstDocumentElement.getElementsByTagName("author");
+                            Element authorElement = (Element)authorList.item(0);
+                            NodeList textATList = authorElement.getChildNodes();
+
+                            NodeList createddateList = firstDocumentElement.getElementsByTagName("createdate");
+                            Element createddateElement = (Element)createddateList.item(0);
+                            NodeList textCDList = doccodeElement.getChildNodes();
+
+                            NodeList modifieddateList = firstDocumentElement.getElementsByTagName("modifieddate");
+                            Element modifieddateElement = (Element)modifieddateList.item(0);
+                            NodeList textMDList = modifieddateElement.getChildNodes();
+
+                            NodeList sizeList = firstDocumentElement.getElementsByTagName("size");
+                            Element sizeElement = (Element)sizeList.item(0);
+                            NodeList textSZList = sizeElement.getChildNodes();
+
+                            data_row.addElement(((Node)textDCList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textSJList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textIFList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textATList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textCDList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textMDList.item(0)).getNodeValue().toString());
+                            data_row.addElement(((Node)textSZList.item(0)).getNodeValue().toString());
+                        }//end of if clause
+                        dtm.addRow(data_row);
+                    }//end of for loop with s var
+
+                    //Pass the Table Object Model Structure
+                    docTable.setModel(dtm);
+
+                    jScrollPane.setViewportView(docTable);
+                }
+                catch (SAXParseException err)
+                {
+                    MessageFrame messageFrame = new MessageFrame("Parsing error" + ", line "
+                            + err.getLineNumber () + ", uri " + err.getSystemId ());
+                }
+                catch (SAXException e)
+                {
+                    Exception x = e.getException ();
+                    MessageFrame messageFrame = new MessageFrame(((x == null) ? e : x).getMessage());
+
+                }
+                catch (Throwable t)
+                {
+                    MessageFrame messageFrame = new MessageFrame(t.getMessage());
                 }
 
                 addButton.addActionListener(new ActionListener() {

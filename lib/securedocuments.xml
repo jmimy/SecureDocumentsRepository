@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<securedocuments>
+<document>
+ <doccode>1001</doccode>
+ <createdate>2014-03-20</createdate>
+ <modifieddate>2014-03-20</modifieddate>
+ <subject>The Volcano</subject>
+ <author>jmimy</author>
+ <information>History and Geography</information>
+ <accesscontrol>1</accesscontrol>
+ <size>24</size>
+</document>
+<document>
+ <doccode>1002</doccode>
+ <createdate>2014-03-20</createdate>
+ <modifieddate>2014-03-20</modifieddate>
+ <subject>The Trees</subject>
+ <author>jmimy</author>
+ <information>Plants and Animals</information>
+ <accesscontrol>0</accesscontrol>
+ <size>12</size>
+</document>
+<document>
+ <doccode>1003</doccode>
+ <createdate>2014-04-04</createdate>
+ <modifieddate>2014-04-04</modifieddate>
+ <subject>The fishes</subject>
+ <author>jmimy</author>
+ <information>Ocean and Sea</information>
+ <accesscontrol>1</accesscontrol>
+ <size>17</size>
+</document>
+</securedocuments>

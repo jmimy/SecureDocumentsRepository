@@ -67,7 +67,7 @@ public class SignOnMainFrame extends JFrame {
                 username = userText.getText();
                 password = passwordText.getText();
                 users = new Users(username,password);
-                Boolean test = false;
+                Boolean test;
 
                 try {
 
@@ -79,11 +79,13 @@ public class SignOnMainFrame extends JFrame {
 
                 }
 
-                if (test = false)
+                if (test = false || username.equals("") || password.equals(""))
                 {
-                    MessageFrame messageFrame = new MessageFrame("You are switching to a stub");
+                    MessageFrame messageFrame = new MessageFrame("No user entered or User invalid");
                 }
-
+                else
+                {
+                    setVisible(false);
                 SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -91,7 +93,7 @@ public class SignOnMainFrame extends JFrame {
 
                     }
                     });
-
+                }
             }
         });
 
